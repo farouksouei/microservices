@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: registry-service
+  name: registry-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry-service
+  strategy: {}
+  template:
+    metadata:
+
+      labels:
+        app: registry-service
+    spec:
+      containers:
+        - env:
+            - name: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+              value: "true"
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          image: registry-service:latest
+          name: registry-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8081
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: registry-service
+  name: registry-service
+spec:
+  ports:
+    - name: "8081"
+      port: 8081
+      targetPort: 8081
+  selector:
+    app: registry-service
+status:
+  loadBalancer: {}

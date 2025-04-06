@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: database
+  name: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: database
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: database
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_TCP_PORT
+              value: "3310"
+            - name: MYSQL_DATABASE
+              value: kripton-talent-db
+            - name: MYSQL_PASSWORD
+              value: root
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+
+          image: mysql:5.7
+          name: database
+          resources: {}
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: database-claim0
+      restartPolicy: Always
+      volumes:
+        - name: database-claim0
+          persistentVolumeClaim:
+            claimName: database-claim0
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: database
+  name: database
+spec:
+  ports:
+    - name: "3310"
+      port: 3310
+      targetPort: 3310
+  selector:
+    app: database
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    app: database-claim0
+  name: database-claim0
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+status: {}

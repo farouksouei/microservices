@@ -1,0 +1,21 @@
+server:
+  port: 6003
+spring:
+  config:
+    activate:
+      on-profile: default
+  cloud:
+    config:
+      name: qualification-service
+      uri: http://localhost:8090
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+  cloud:
+    config:
+      name: qualification-service
+      uri: http://configuration-service:8090

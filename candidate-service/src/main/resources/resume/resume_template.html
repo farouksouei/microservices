@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title th:text="${firstName + ' ' + lastName + ' | ' + designation + ' | ' + email}"></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<style>
+		/* Reset styles */
+		html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			outline: 0;
+			font-weight: inherit;
+			font-style: inherit;
+			font-size: 100%;
+			font-family: inherit;
+			vertical-align: baseline;
+			box-sizing: border-box;
+		}
+
+		/* Core styles */
+		body {
+			font-family: Arial, sans-serif;
+			color: #333;
+			background-color: #f5f5f5;
+			margin: 20px auto;
+			max-width: 800px;
+			padding: 20px;
+		}
+
+		h1, h2, h3, h4, h5, h6 {
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		h2 {
+			font-size: 24px;
+			color: #333;
+		}
+
+		p {
+			margin-bottom: 10px;
+			line-height: 1.5;
+		}
+
+		a {
+			color: #990003;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		strong {
+			font-weight: bold;
+		}
+
+		/* Layout styles */
+		#header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 30px;
+		}
+
+		#header h1 {
+			font-size: 36px;
+			color: #333;
+			margin-bottom: 5px;
+		}
+
+		#header h2 {
+			font-size: 20px;
+			color: #555;
+		}
+
+		#contact-info {
+			text-align: right;
+		}
+
+		.section {
+			margin-bottom: 30px;
+		}
+
+		.section h2 {
+			font-size: 24px;
+			margin-bottom: 20px;
+			color: #333;
+		}
+
+		.job {
+			margin-bottom: 20px;
+		}
+
+		.job h3 {
+			font-size: 20px;
+			color: #333;
+			margin-bottom: 5px;
+			display: inline-block;
+		}
+
+		.job span {
+			display: inline-block;
+			margin-left: 10px;
+			color: #777;
+		}
+
+		.job p {
+			margin-bottom: 10px;
+		}
+
+		.skills {
+			margin-bottom: 10px;
+			font-size: 14px;
+		}
+
+		.skills ul {
+			list-style-type: disc;
+			margin-left: 20px;
+		}
+
+		.contact-info-item {
+			margin-bottom: 5px;
+		}
+
+		/* Print styles */
+		@media print {
+			body {
+				background-color: #fff;
+			}
+
+			#wrapper {
+				width: 100%;
+				padding: 0;
+				margin: 0;
+			}
+
+			#header {
+				margin-bottom: 0;
+			}
+
+			.section {
+				margin-bottom: 10px;
+			}
+		}
+	</style>
+</head>
+<body>
+<div id="wrapper">
+	<div id="header">
+		<div>
+			<h1 th:text="${firstName + ' ' + lastName}"></h1>
+			<h2 th:text="${designation}"></h2>
+		</div>
+		<div id="contact-info">
+			<p class="contact-info-item"><strong>Email:</strong> <a th:href="'mailto:' + ${email}" th:text="${email}"></a></p>
+			<p class="contact-info-item"><strong>Phone:</strong> <span th:text="${phone}"></span></p>
+			<p class="contact-info-item"><strong>Country:</strong> <span th:text="${country}"></span></p>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Profile</h2>
+		<p th:text="${description}"></p>
+	</div>
+
+	<div class="section">
+		<h2>Skills</h2>
+		<div class="skills">
+			<ul>
+				<li th:each="skill : ${skills}" th:text="${skill}"></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Experience</h2>
+		<div class="job"  th:each="experience : ${experiences}">
+			<h3>
+				<span th:text="${experience.title}"></span>
+				<span>
+						From: <span th:text="${#dates.format(experience.fromDate, 'dd, MM, yyyy')}"></span> - To:
+						<span th:if="${experience.toDate != null}" th:text="${#dates.format(experience.toDate, 'dd, MM, yyyy')}"></span>
+					</span>
+			</h3>
+			<p th:text="${experience.description}"></p>
+		</div>
+	</div>
+
+	<div class="section">
+		<h2>Education</h2>
+		<div class="job"  th:each="education : ${educations}">
+			<h3>
+				<span th:text="${education.university}"></span>
+				<span>
+						From: <span th:text="${#dates.format(education.fromDate, 'dd, MM, yyyy')}"></span> - To:
+						<span th:if="${education.toDate != null}" th:text="${#dates.format(education.toDate, 'dd, MM, yyyy')}"></span>
+					</span>
+			</h3>
+			<p th:text="${education.degree}"></p>
+		</div>
+	</div>
+</div><!-- // wrapper -->
+</body>
+</html>

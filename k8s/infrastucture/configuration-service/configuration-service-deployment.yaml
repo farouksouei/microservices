@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: configuration-service
+  name: configuration-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configuration-service
+  template:
+    metadata:
+      labels:
+        app: configuration-service
+    spec:
+      containers:
+        - env:
+          image: configuration-service:latest
+          name: configuration-service
+          ports:
+            - containerPort: 8081
+          resources: {}
+          imagePullPolicy: Never
+      restartPolicy: Always
+status: {}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: configuration-service
+  name: configuration-service
+spec:
+  ports:
+    - name: "8090"
+      port: 8090
+      targetPort: 8090
+  selector:
+    app: configuration-service
+status:
+  loadBalancer: {}

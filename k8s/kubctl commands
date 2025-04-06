@@ -1,0 +1,37 @@
+minikube docker-env -u | Invoke-Expression  to change the docker
+
+
+
+
+Cluster Operations:
+
+kubectl cluster-info: Display information about the Kubernetes cluster.
+kubectl get nodes: List all nodes in the cluster.
+kubectl describe node <node-name>: Get detailed information about a specific node.
+Pod Operations:
+
+kubectl get pods: List all pods in the cluster.
+kubectl describe pod <pod-name>: Get detailed information about a specific pod.
+kubectl logs <pod-name>: View the logs of a specific pod.
+kubectl exec -it <pod-name> -- <command>: Run a command inside a specific pod.
+Deployment Operations:
+
+kubectl get deployments: List all deployments in the cluster.
+kubectl describe deployment <deployment-name>: Get detailed information about a specific deployment.
+kubectl scale deployment <deployment-name> --replicas=<count>: Scale the number of replicas for a deployment.
+Service Operations:
+
+kubectl get services: List all services in the cluster.
+kubectl describe service <service-name>: Get detailed information about a specific service.
+kubectl port-forward <service-name> <local-port>:<service-port>: Forward a local port to a service port.
+Configuration and Secrets:
+
+kubectl get configmaps: List all configmaps in the cluster.
+kubectl describe configmap <configmap-name>: Get detailed information about a specific configmap.
+kubectl get secrets: List all secrets in the cluster.
+kubectl describe secret <secret-name>: Get detailed information about a specific secret.
+Namespace Operations:
+
+kubectl get namespaces: List all namespaces in the cluster.
+kubectl create namespace <namespace-name>: Create a new namespace.
+kubectl delete namespace <namespace-name>: Delete a namespace and all its resources.

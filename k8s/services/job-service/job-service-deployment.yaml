@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: job-service
+  name: job-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-service
+  strategy: {}
+  template:
+    metadata:
+
+      labels:
+        app: job-service
+    spec:
+      hostname: job-service
+      containers:
+        - env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://database:3310/kripton-talent-db?useSSL=false
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          image: job-service:latest
+          imagePullPolicy: Never
+          name: job-service
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: job-service
+  name: job-service
+spec:
+  ports:
+    - name: "6002"
+      port: 6002
+      targetPort: 6002
+  selector:
+    app: job-service
+status:
+  loadBalancer: {}

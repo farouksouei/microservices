@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-gateway-service
+  name: api-gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: api-gateway-service
+    spec:
+      hostname: api-gateway-service
+      containers:
+        - env:
+            - name: LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY
+              value: 'TRACE'
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          image: api-gateway-service:latest
+          name: api-gateway-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8082
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: api-gateway-service
+  name: api-gateway-service
+spec:
+  type: NodePort
+  ports:
+    - name: "8082"
+      port: 8082
+      targetPort: 8082
+  selector:
+    app: api-gateway-service
+status:
+  loadBalancer: {}

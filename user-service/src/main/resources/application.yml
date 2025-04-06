@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: user-service
+
+serverUrl: http://localhost:8080

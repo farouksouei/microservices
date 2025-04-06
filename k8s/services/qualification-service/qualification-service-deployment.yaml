@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: qualification-service
+  name: qualification-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qualification-service
+  strategy: {}
+  template:
+    metadata:
+
+      labels:
+        app: qualification-service
+    spec:
+      hostname: qualification-service
+      containers:
+        - env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://database:3310/kripton-talent-db?useSSL=false
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          image:  qualification-service:latest
+          imagePullPolicy: Never
+          name: qualification-service
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: qualification-service
+  name: qualification-service
+spec:
+  ports:
+    - name: "80"
+      port: 80
+      targetPort: 6003
+  selector:
+    app: qualification-service
+status:
+  loadBalancer: {}

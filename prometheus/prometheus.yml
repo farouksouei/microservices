@@ -1,0 +1,29 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'candidate_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['candidate-service:6001']
+        labels:
+          application: 'Candidate Service Application'
+  - job_name: 'job_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['job-service:6002']
+        labels:
+          application: 'Job Service Application'
+  - job_name: 'qualification_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['qualification-service:6003']
+        labels:
+          application: 'Qualification Service Application'
+  - job_name: 'communication_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['communication-service:6005']
+        labels:
+          application: 'Communication and notification Service Application'

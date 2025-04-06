@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: communication-service
+  name: communication-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: communication-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: communication-service
+    spec:
+      hostname: communication-service
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          image: communication-service:latest
+          imagePullPolicy: Never
+          name: communication-service
+          resources: {}
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: communication-service
+  name: communication-service
+spec:
+  ports:
+    - name: "6005"
+      port: 6005
+      targetPort: 6005
+  selector:
+    app: communication-service
+status:
+  loadBalancer: {}

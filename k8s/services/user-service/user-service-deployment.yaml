@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: user-service
+  name: user-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: user-service
+    spec:
+      hostname: user-service
+      containers:
+        - env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: docker
+          image: user-service:latest
+          name: user-service
+          resources: {}
+          imagePullPolicy: Never
+      restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: user-service
+  name: user-service
+spec:
+  ports:
+    - name: "6004"
+      port: 6004
+      targetPort: 6004
+  selector:
+    app: user-service
+status:
+  loadBalancer: {}

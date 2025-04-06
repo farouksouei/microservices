@@ -1,0 +1,10 @@
+./.vscode/
+./keycloak/
+./data/
+./.idea/
+./.jpb/
+data/
+.vscode/
+.idea/
+.jpb/
+keycloak/

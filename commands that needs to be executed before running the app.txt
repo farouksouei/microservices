@@ -1,0 +1,4 @@
+open cmd and run these commands :
+
+wsl -d docker-desktop -u root
+sysctl -w vm.max_map_count=262144

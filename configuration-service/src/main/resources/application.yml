@@ -1,0 +1,15 @@
+
+server:
+  port: 8090
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/alaabenfradj/kritpon-talent-config
+          #search-paths: '{directory}' The directory within the Git repository where the configuration files are stored. If your configuration files are stored in the root directory of the repository, you can omit this property.
+          #username: { github_username }
+          #password: { github_password }
+          #uri: file://${user.home}/OneDrive/Desktop/PFE-Files/kripton-talent-application\kripton-talent-conf
+          default-label: main
+          clone-on-start: true

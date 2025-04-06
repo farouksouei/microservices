@@ -1,0 +1,21 @@
+server:
+  port: 6001
+spring:
+  config:
+    activate:
+      on-profile: default
+  cloud:
+    config:
+      name: candidate-service
+      uri: http://localhost:8090
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: docker
+  cloud:
+    config:
+      name: candidate-service
+      uri: http://configuration-service:8090

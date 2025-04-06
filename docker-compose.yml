@@ -1,0 +1,364 @@
+---
+services:
+  #################################### Data Bases instances ################################
+  # test_db:
+  #   container_name: test_db
+  #   image: mysql:5.7
+  #   volumes:
+  #     - ./data/test_db_data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_TCP_PORT: 3309
+  #     MYSQL_ROOT_PASSWORD: "root"
+  #     MYSQL_DATABASE: "test_db"
+  #   restart: always
+  #   ports:
+  #     - "3309:3309"
+  #   networks:
+  #     - kripton-talent-network
+  database:
+    container_name: database
+    image: mysql:5.7
+    volumes:
+      - mysql_database:/var/lib/mysql
+    environment:
+      MYSQL_TCP_PORT: 3310
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "kripton-talent-db"
+    restart: unless-stopped
+    ports:
+      - "3310:3310"
+    networks:
+      - kripton-talent-network
+  phpmyadmin:
+    container_name: my-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: database
+      PMA_PORT: 3310
+    ports:
+      - "7070:80"
+    networks:
+      - kripton-talent-network
+    restart: unless-stopped
+  postgres:
+    image: postgres:14.4
+    restart: unless-stopped
+    networks:
+      - kripton-talent-network
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_DB=sonarqube
+    volumes:
+      - sonarqube_db:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube:8.9.7-community
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://postgres:5432/sonarqube
+    ports:
+      - "9000:9000"
+
+    networks:
+      - kripton-talent-network
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_bundled-plugins:/opt/sonarqube/lib/bundled-plugins
+  nexus:
+    image: sonatype/nexus3
+    container_name: nexus
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://127.0.0.1:8085/service/rest/v1/status" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "8085:8081"
+      - "8087:8087"
+    volumes:
+      - nexus-data:/nexus-data
+    networks:
+      - kripton-talent-network
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    container_name: prometheus
+    networks:
+      - kripton-talent-network
+    restart: unless-stopped
+    depends_on:
+      - job-service
+      - candidate-service
+      - qualification-service
+      - communication-service
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    container_name: grafana
+    networks:
+      - kripton-talent-network
+    restart: unless-stopped
+    volumes:
+      - grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+  ## keycloak ##
+  keycloak-db:
+    container_name: keycloak_db
+    image: mysql:8.0.27
+    restart: unless-stopped
+    volumes:
+      - keycloak_database:/var/lib/mysql
+    ports:
+      - "3320:3320"
+    environment:
+      MYSQL_TCP_PORT: 3320
+      MYSQL_USER: keycloak_user
+      MYSQL_PASSWORD: keycloak_password
+      MYSQL_DATABASE: keycloak_db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - kripton-talent-network
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:21.1.1
+    command: ["start-dev", "--import-realm" ]
+    depends_on:
+      - keycloak-db
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      DB_VENDOR: mysql
+      DB_ADDR: keycloak_db
+      DB_PORT: 3320
+      DB_USER: keycloak_user
+      DB_PASSWORD: keycloak_password
+      DB_DATABASE: keycloak_db
+    volumes:
+      - ./realms/:/opt/keycloak/data/import/
+    ports:
+      - "8080:8080"
+    networks:
+      - kripton-talent-network
+  ## Kafka and zookeeper ##
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper
+    networks:
+      - kripton-talent-network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+  broker:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: broker
+    networks:
+      - kripton-talent-network
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      ## localhost
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      ## docker
+      #KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+
+  #################################################### my services #####################################################################
+  ## PORTS : config 8090 , eureka 8081 , gateway 8082 , candidate 6001 , job 6002 , qualification 6003 , user 6004 ,communication 6005
+  ################################################### my services ###################################################################
+
+  ## config Server
+  configuration-service:
+    image: 127.0.0.1:8087/configuration-service
+    container_name: configuration-service
+    ports:
+      - "8090:8090"
+    networks:
+      - kripton-talent-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://configuration-service:8090/registry-service/default"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  ## discovery Server
+  registry-service:
+    image: 127.0.0.1:8087/registry-service
+    container_name: registry-service
+    depends_on:
+      configuration-service:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    networks:
+      - kripton-talent-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  ## api gateway
+  api-gateway-service:
+    image: 127.0.0.1:8087/api-gateway-service
+    container_name: api-gateway-service
+    depends_on:
+      - configuration-service
+      - registry-service
+      - keycloak
+    environment:
+      - LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY= TRACE
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - kripton-talent-network
+    ports:
+      - "8082:8082"
+  ## candidate service
+  candidate-service:
+    image: 127.0.0.1:8087/candidate-service
+    container_name: candidate-service
+    depends_on:
+      - configuration-service
+      - registry-service
+      - qualification-service
+      - database
+    networks:
+      - kripton-talent-network
+    environment:
+      - jdbc:mysql://database:3310/kripton-talent-db?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "6001:6001"
+  ## job service
+  job-service:
+    image: 127.0.0.1:8087/job-service
+    container_name: job-service
+    depends_on:
+      - configuration-service
+      - registry-service
+      - qualification-service
+      - database
+    environment:
+      - jdbc:mysql://database:3310/kripton-talent-db?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - kripton-talent-network
+    ports:
+      - "6002:6002"
+  ## qualification service
+  qualification-service:
+    image: 127.0.0.1:8087/qualification-service
+    container_name: qualification-service
+    depends_on:
+      - configuration-service
+      - registry-service
+      - database
+    networks:
+      - kripton-talent-network
+    environment:
+      - jdbc:mysql://database:3310/kripton-talent-db?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "6003:6003"
+  ## user service
+  user-service:
+    image: 127.0.0.1:8087/user-service
+    container_name: user-service
+    depends_on:
+      - configuration-service
+      - registry-service
+      - keycloak
+    networks:
+      - kripton-talent-network
+    ports:
+      - "6004:6004"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+  ## communication (Notification) service
+  communication-service:
+    image: 127.0.0.1:8087/communication-service
+    container_name: communication-service
+    depends_on:
+      - configuration-service
+      - registry-service
+      - broker
+    networks:
+      - kripton-talent-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - "6005:6005"
+  ## Front end
+  kripton-talent-front:
+    image: kripton-front
+    container_name: kripton_talent_front
+    depends_on:
+      - api-gateway-service
+      - candidate-service
+      - user-service
+      - job-service
+      - qualification-service
+      - communication-service
+      - matcher_parser
+    ports:
+      - "4200:4200"
+    networks:
+      - kripton-talent-network
+  ## Matching and Parsing service
+  matcher_parser:
+    image: matcher_parser_image
+    container_name: matcher_parser
+    volumes:
+      - parser_matcher:/var/lib/parser_data
+    depends_on:
+      - database
+      - registry-service
+    ports:
+      - "6000:6000"
+    networks:
+      - kripton-talent-network
+
+
+
+volumes:
+  mysql_database:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_bundled-plugins:
+  sonarqube_db:
+  postgresql_data:
+  mysqldb:
+  nexus-data:
+  prometheus:
+  grafana:
+  keycloak_database:
+  parser_matcher:
+networks:
+  kripton-talent-network:

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kripton-talent-front
+  name: kripton-talent-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kripton-talent-front
+  template:
+    metadata:
+      labels:
+        app: kripton-talent-front
+    spec:
+      containers:
+        - name: kripton-talent-front
+          image: kripton-front
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 4200
+
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: kripton-talent-front
+  name: kripton-talent-front
+spec:
+  type: NodePort
+  ports:
+    - port: 4200
+      targetPort: 4200
+      protocol: TCP
+  selector:
+    app: kripton-talent-front
