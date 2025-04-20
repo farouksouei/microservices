@@ -181,7 +181,7 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: ''
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       ## localhost
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
@@ -319,35 +319,6 @@ services:
       - SPRING_PROFILES_ACTIVE=docker
     ports:
       - "6005:6005"
-  ## Front end
-  kripton-talent-front:
-    image: kripton-front
-    container_name: kripton_talent_front
-    depends_on:
-      - api-gateway-service
-      - candidate-service
-      - user-service
-      - job-service
-      - qualification-service
-      - communication-service
-      - matcher_parser
-    ports:
-      - "4200:4200"
-    networks:
-      - kripton-talent-network
-  ## Matching and Parsing service
-  matcher_parser:
-    image: matcher_parser_image
-    container_name: matcher_parser
-    volumes:
-      - parser_matcher:/var/lib/parser_data
-    depends_on:
-      - database
-      - registry-service
-    ports:
-      - "6000:6000"
-    networks:
-      - kripton-talent-network
 
 
 

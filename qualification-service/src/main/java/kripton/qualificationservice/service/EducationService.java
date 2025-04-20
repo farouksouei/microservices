@@ -92,4 +92,9 @@ public class EducationService implements IEducationService{
             educationRepository.save(educationEntity);
         });
     }
+
+    @Override
+    public EducationDto updateEducation(Long idEducation, EducationDto educationDto) {
+        return null;
+    }
 }

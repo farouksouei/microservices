@@ -89,4 +89,9 @@ public class CertificationService implements ICertificationService{
             certificationRepository.save(certificationEntity);
         });
     }
+
+    @Override
+    public CertificationDto updateCertification(Long idCertification, CertificationDto certificationDto) {
+        return null;
+    }
 }
