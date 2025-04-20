@@ -85,6 +85,11 @@ services:
     ports:
       - "8085:8081"
       - "8087:8087"
+    environment:
+      - NEXUS_CONTEXT_PATH=/
+      - NEXUS_HTTP_HOST=0.0.0.0
+      - NEXUS_HTTP_PORT=8081
+      - INSTALL4J_ADD_VM_PARAMS=-Dnexus.docker.token.realm.url=http://localhost:8087/v2/token
     volumes:
       - nexus-data:/nexus-data
     networks:
@@ -176,7 +181,7 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_ZOOKEEPER_CONNECT: ''
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       ## localhost
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092

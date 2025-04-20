@@ -12,4 +12,6 @@ public interface IExperienceService {
     void assignExperienceToCandidate(Long idCandidate,Long idExp );
     void assignListOfExperiencesToCandidate(Long idCandidate,List<Long>experiences);
     void assignListOfDtoExperiencesToCandidate(Long idCandidate,List<ExperienceDto> experienceDtos);
+
+    ExperienceDto updateExperience(Long idExperience, ExperienceDto experienceDto);
 }

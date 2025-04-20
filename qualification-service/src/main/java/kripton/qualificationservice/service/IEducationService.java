@@ -14,4 +14,6 @@ public interface IEducationService {
     void assignEducationToCandidate(Long idCandidate,Long idEducation );
     void assignListOfEducationsToCandidate(Long idCandidate,List<Long>educations);
     void assignListOfDtoEducationsToCandidate(Long idCandidate,List<EducationDto>educationDtos);
+
+    EducationDto updateEducation(Long idEducation, EducationDto educationDto);
 }

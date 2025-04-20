@@ -1,0 +1,185 @@
+### Get all jobs sorted by attribute
+GET http://localhost:8082/api/jobs?sortByAttribute=createdAt
+Accept: application/json
+
+
+### Create a new job (multipart/form-data)
+POST http://localhost:8082/api/jobs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1S1p4N0tBNnhCU1loXzQ2NGowclgybTYzelg3VjE4a0t6WWU1eldLeW5RIn0.eyJleHAiOjE3NDQwMjY2NzksImlhdCI6MTc0NDAxNTg3OSwianRpIjoiYmMyOTIxYTAtNjExYi00ZTgyLWI1MTAtYTI3ZjMzYmMzZjlmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIiwic3ViIjoiNjQ4M2ZhMDUtNTdkZC00YWJkLTk1MDgtYThiMmY0MGFmYjE2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia3JpcHRvbi10YWxlbnQiLCJzZXNzaW9uX3N0YXRlIjoiYjdmMGFlNzEtYjg2YS00NjAyLWEyZDgtOGRmYzU5NzEzNTM3IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJjYW5kaWRhdGUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIl19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJiN2YwYWU3MS1iODZhLTQ2MDItYTJkOC04ZGZjNTk3MTM1MzciLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Im9rYmEgb2tiYSIsInByZWZlcnJlZF91c2VybmFtZSI6ImhvdXNlbSIsImdpdmVuX25hbWUiOiJva2JhIiwiZmFtaWx5X25hbWUiOiJva2JhIiwiZW1haWwiOiJob3VzZW1AdGVzdC5jb20ifQ.RRiVL8Nb72v1yMKXhuM0X8Qe3cHeJkER6EwOlTfOO9tN2XkebFfP4BLeoTNDuat2kGFCTumgn-B7UW99Fjvv4BzTdKRYblnw-Iw6ocf95joySsOpkq-iLkOt-igePVDusq4zLNfW4LHQuEWoQBe5S1Jhxe9TIvrM-grUd50KKaZLNa65PrWjNSU_u4t0gG_nn_WfBs16KKRsHf-bPfz_hrSmDePb_0kcVUkf--xuUkzhRg6tQu_qSCDlQ6q6lGG7VIbdL38OkfaaLl9HyGDOcKgALpfodUVSQcaxsIPw_hvC1SX0F7bd97jtCDLC2KKSwGbUCQsZCwvAKjYSf5uMNw
+
+{
+  "title": "Java Developer",
+  "description": "Java backend development role.",
+  "location": "Remote",
+  "employmentType": "FULL_TIME",
+  "experienceLevel": "MID",
+  "proposedSalary": 85000,
+  "company": "Kripton Tech",
+  "startDate": "2025-04-15",
+  "status": "OPEN",
+  "requiredSkills": ["Java", "Spring Boot", "SQL"]
+}
+
+
+###
+
+### Get job by ID
+GET http://localhost:8082/api/jobs/1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1S1p4N0tBNnhCU1loXzQ2NGowclgybTYzelg3VjE4a0t6WWU1eldLeW5RIn0.eyJleHAiOjE3NDQwMjY2NzksImlhdCI6MTc0NDAxNTg3OSwianRpIjoiYmMyOTIxYTAtNjExYi00ZTgyLWI1MTAtYTI3ZjMzYmMzZjlmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIiwic3ViIjoiNjQ4M2ZhMDUtNTdkZC00YWJkLTk1MDgtYThiMmY0MGFmYjE2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia3JpcHRvbi10YWxlbnQiLCJzZXNzaW9uX3N0YXRlIjoiYjdmMGFlNzEtYjg2YS00NjAyLWEyZDgtOGRmYzU5NzEzNTM3IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJjYW5kaWRhdGUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIl19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJiN2YwYWU3MS1iODZhLTQ2MDItYTJkOC04ZGZjNTk3MTM1MzciLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Im9rYmEgb2tiYSIsInByZWZlcnJlZF91c2VybmFtZSI6ImhvdXNlbSIsImdpdmVuX25hbWUiOiJva2JhIiwiZmFtaWx5X25hbWUiOiJva2JhIiwiZW1haWwiOiJob3VzZW1AdGVzdC5jb20ifQ.RRiVL8Nb72v1yMKXhuM0X8Qe3cHeJkER6EwOlTfOO9tN2XkebFfP4BLeoTNDuat2kGFCTumgn-B7UW99Fjvv4BzTdKRYblnw-Iw6ocf95joySsOpkq-iLkOt-igePVDusq4zLNfW4LHQuEWoQBe5S1Jhxe9TIvrM-grUd50KKaZLNa65PrWjNSU_u4t0gG_nn_WfBs16KKRsHf-bPfz_hrSmDePb_0kcVUkf--xuUkzhRg6tQu_qSCDlQ6q6lGG7VIbdL38OkfaaLl9HyGDOcKgALpfodUVSQcaxsIPw_hvC1SX0F7bd97jtCDLC2KKSwGbUCQsZCwvAKjYSf5uMNw
+
+
+###
+
+### Update job by ID (with optional image)
+PUT http://localhost:8082/api/jobs/1
+Content-Type: multipart/form-data
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1S1p4N0tBNnhCU1loXzQ2NGowclgybTYzelg3VjE4a0t6WWU1eldLeW5RIn0.eyJleHAiOjE3NDQwMjY2NzksImlhdCI6MTc0NDAxNTg3OSwianRpIjoiYmMyOTIxYTAtNjExYi00ZTgyLWI1MTAtYTI3ZjMzYmMzZjlmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIiwic3ViIjoiNjQ4M2ZhMDUtNTdkZC00YWJkLTk1MDgtYThiMmY0MGFmYjE2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia3JpcHRvbi10YWxlbnQiLCJzZXNzaW9uX3N0YXRlIjoiYjdmMGFlNzEtYjg2YS00NjAyLWEyZDgtOGRmYzU5NzEzNTM3IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJjYW5kaWRhdGUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIl19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJiN2YwYWU3MS1iODZhLTQ2MDItYTJkOC04ZGZjNTk3MTM1MzciLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Im9rYmEgb2tiYSIsInByZWZlcnJlZF91c2VybmFtZSI6ImhvdXNlbSIsImdpdmVuX25hbWUiOiJva2JhIiwiZmFtaWx5X25hbWUiOiJva2JhIiwiZW1haWwiOiJob3VzZW1AdGVzdC5jb20ifQ.RRiVL8Nb72v1yMKXhuM0X8Qe3cHeJkER6EwOlTfOO9tN2XkebFfP4BLeoTNDuat2kGFCTumgn-B7UW99Fjvv4BzTdKRYblnw-Iw6ocf95joySsOpkq-iLkOt-igePVDusq4zLNfW4LHQuEWoQBe5S1Jhxe9TIvrM-grUd50KKaZLNa65PrWjNSU_u4t0gG_nn_WfBs16KKRsHf-bPfz_hrSmDePb_0kcVUkf--xuUkzhRg6tQu_qSCDlQ6q6lGG7VIbdL38OkfaaLl9HyGDOcKgALpfodUVSQcaxsIPw_hvC1SX0F7bd97jtCDLC2KKSwGbUCQsZCwvAKjYSf5uMNw
+
+--boundary
+Content-Disposition: form-data; name="job"
+Content-Type: application/json
+
+{
+  "title": "Updated Title",
+  "description": "Updated Description",
+  "location": "Updated Location",
+  "employmentType": "PART_TIME",
+  "experienceLevel": "SENIOR",
+  "proposedSalary": 120000,
+  "company": "Updated Company",
+  "startDate": "2025-04-20",
+  "status": "CLOSED",
+  "requiredSkills": ["Leadership", "Kubernetes"]
+}
+--boundary--
+
+###
+
+### Delete job by ID
+DELETE http://localhost:8080/api/jobs/1
+Accept: application/json
+
+###
+
+### Assign candidate to job
+PUT http://localhost:8082/api/jobs/assign-job/1/to-candidate/2
+Accept: application/json
+
+###
+
+### Assign multiple candidates to a job
+PUT http://localhost:8080/api/jobs/assign-multiple/1
+Content-Type: application/json
+
+[
+  {
+    "id": 2,
+    "fullName": "John Doe"
+  },
+  {
+    "id": 3,
+    "fullName": "Jane Doe"
+  }
+]
+
+###
+
+### Get candidates assigned to a job
+GET http://localhost:8082/api/jobs/assigned-candidates/1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1S1p4N0tBNnhCU1loXzQ2NGowclgybTYzelg3VjE4a0t6WWU1eldLeW5RIn0.eyJleHAiOjE3NDQwMjY2NzksImlhdCI6MTc0NDAxNTg3OSwianRpIjoiYmMyOTIxYTAtNjExYi00ZTgyLWI1MTAtYTI3ZjMzYmMzZjlmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIiwic3ViIjoiNjQ4M2ZhMDUtNTdkZC00YWJkLTk1MDgtYThiMmY0MGFmYjE2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoia3JpcHRvbi10YWxlbnQiLCJzZXNzaW9uX3N0YXRlIjoiYjdmMGFlNzEtYjg2YS00NjAyLWEyZDgtOGRmYzU5NzEzNTM3IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJjYW5kaWRhdGUiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIiwiZGVmYXVsdC1yb2xlcy1zcHJpbmctYm9vdC1taWNyb3NlcnZpY2VzLXJlYWxtIl19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJiN2YwYWU3MS1iODZhLTQ2MDItYTJkOC04ZGZjNTk3MTM1MzciLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Im9rYmEgb2tiYSIsInByZWZlcnJlZF91c2VybmFtZSI6ImhvdXNlbSIsImdpdmVuX25hbWUiOiJva2JhIiwiZmFtaWx5X25hbWUiOiJva2JhIiwiZW1haWwiOiJob3VzZW1AdGVzdC5jb20ifQ.RRiVL8Nb72v1yMKXhuM0X8Qe3cHeJkER6EwOlTfOO9tN2XkebFfP4BLeoTNDuat2kGFCTumgn-B7UW99Fjvv4BzTdKRYblnw-Iw6ocf95joySsOpkq-iLkOt-igePVDusq4zLNfW4LHQuEWoQBe5S1Jhxe9TIvrM-grUd50KKaZLNa65PrWjNSU_u4t0gG_nn_WfBs16KKRsHf-bPfz_hrSmDePb_0kcVUkf--xuUkzhRg6tQu_qSCDlQ6q6lGG7VIbdL38OkfaaLl9HyGDOcKgALpfodUVSQcaxsIPw_hvC1SX0F7bd97jtCDLC2KKSwGbUCQsZCwvAKjYSf5uMNw
+
+
+###
+
+### Get jobs not assigned to candidate
+GET http://localhost:8080/api/jobs/candidate/2
+Accept: application/json
+
+###
+
+### Assign candidate to multiple jobs
+PUT http://localhost:8080/api/jobs/assign-candidate/2/jobs
+Content-Type: application/json
+
+[1, 3, 4]
+
+###
+
+### Remove assignment
+DELETE http://localhost:8080/api/jobs/unassign-candidate/2/job/1
+Accept: application/json
+
+###
+
+### Get job applications for a job
+GET http://localhost:8080/api/jobs/job-applications/job/1
+Accept: application/json
+
+###
+
+### Create job application
+POST http://localhost:8080/api/jobs/job-applications/candidate/2/job/1
+Content-Type: application/json
+
+{
+  "applicationMessage": "I am highly interested in this position",
+  "status": "PENDING"
+}
+
+###
+
+### Get job applications of a candidate
+GET http://localhost:8080/api/jobs/job-applications/candidate/2
+Accept: application/json
+
+###
+
+### Update job application
+PUT http://localhost:8080/api/jobs/job-applications/1
+Content-Type: application/json
+
+{
+  "applicationMessage": "Updated Message",
+  "status": "REVIEWED"
+}
+
+###
+
+### Get all job applications
+GET http://localhost:8080/api/jobs/job-applications
+Accept: application/json
+
+###
+
+### Get all jobs not applied by candidate
+GET http://localhost:8080/api/jobs/job-applications/not-candidate/2
+Accept: application/json
+
+###
+
+### Delete job application
+DELETE http://localhost:8080/api/jobs/job-applications/1
+Accept: application/json
+
+###
+
+### Delete multiple job applications
+POST http://localhost:8080/api/jobs/job-applications/multiple
+Content-Type: application/json
+
+[1, 2, 3]
+
+###
+
+### Delete all job applications for a candidate
+DELETE http://localhost:8080/api/jobs/job-applications/candidate/2
+Accept: application/json
+
+###
+
+### Get job statistics
+GET http://localhost:8080/api/jobs/stats
+Accept: application/json

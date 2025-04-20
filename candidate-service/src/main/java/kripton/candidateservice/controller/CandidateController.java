@@ -96,7 +96,6 @@ public class CandidateController {
                                                                           @RequestPart(value = "image",required = false)MultipartFile image
                                                                          ){
             try {
-
                 return ResponseEntity.status(200).body(candidateService.updateCandidateWithDetails(dto,idCandidate,image));
             }catch (IllegalAccessException e) {
                 log.error (e.getMessage ());

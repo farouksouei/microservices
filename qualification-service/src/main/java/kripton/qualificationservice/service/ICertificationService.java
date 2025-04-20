@@ -15,4 +15,6 @@ public interface ICertificationService {
     void assignCertificationToCandidate(Long idCandidate,Long idCertification );
     void assignListOfCertificationsToCandidate(Long idCandidate,List<Long>certifications);
     void assignListOfDtoCertificationsToCandidate(Long idCandidate,List<CertificationDto>certificationDtos);
+
+    CertificationDto updateCertification(Long idCertification, CertificationDto certificationDto);
 }

@@ -83,5 +83,48 @@ public class QualificationController {
         certificationService.assignListOfDtoCertificationsToCandidate(idCandidate, certificationDtos);
     }
 
+    @PutMapping("/experience/{id-experience}")
+    ExperienceDto updateExperience(@PathVariable(name = "id-experience") Long idExperience,
+                                   @RequestBody ExperienceDto experienceDto) {
+        log.info("Updating experience with ID: {}", idExperience);
+        return experienceService.updateExperience(idExperience, experienceDto);
+    }
+
+    // Update Education by ID
+    @PutMapping("/education/{id-education}")
+    EducationDto updateEducation(@PathVariable(name = "id-education") Long idEducation,
+                                 @RequestBody EducationDto educationDto) {
+        log.info("Updating education with ID: {}", idEducation);
+        return educationService.updateEducation(idEducation, educationDto);
+    }
+
+    // Update Certification by ID
+    @PutMapping("/certification/{id-certification}")
+    CertificationDto updateCertification(@PathVariable(name = "id-certification") Long idCertification,
+                                         @RequestBody CertificationDto certificationDto) {
+        log.info("Updating certification with ID: {}", idCertification);
+        return certificationService.updateCertification(idCertification, certificationDto);
+    }
+
+    @DeleteMapping("/experience/{id-experience}")
+    void deleteExperience(@PathVariable(name = "id-experience") Long idExperience) {
+        log.info("Deleting experience with ID: {}", idExperience);
+        experienceService.deleteExperience(idExperience);
+    }
+
+    // Delete Education by ID
+    @DeleteMapping("/education/{id-education}")
+    void deleteEducation(@PathVariable(name = "id-education") Long idEducation) {
+        log.info("Deleting education with ID: {}", idEducation);
+        educationService.deleteEducation(idEducation);
+    }
+
+    // Delete Certification by ID
+    @DeleteMapping("/certification/{id-certification}")
+    void deleteCertification(@PathVariable(name = "id-certification") Long idCertification) {
+        log.info("Deleting certification with ID: {}", idCertification);
+        certificationService.deleteCertification(idCertification);
+    }
+
 
 }
