@@ -1,20 +1,5 @@
 ---
 services:
-  #################################### Data Bases instances ################################
-  # test_db:
-  #   container_name: test_db
-  #   image: mysql:5.7
-  #   volumes:
-  #     - ./data/test_db_data:/var/lib/mysql
-  #   environment:
-  #     MYSQL_TCP_PORT: 3309
-  #     MYSQL_ROOT_PASSWORD: "root"
-  #     MYSQL_DATABASE: "test_db"
-  #   restart: always
-  #   ports:
-  #     - "3309:3309"
-  #   networks:
-  #     - kripton-talent-network
   database:
     container_name: database
     image: mysql:5.7

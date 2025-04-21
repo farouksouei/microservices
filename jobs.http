@@ -1,0 +1,167 @@
+### Environment Variables
+@baseUrl = http://localhost:8082/api/jobs
+@candidateId = 1
+@jobId = 1
+@applicationId = 1
+@token = eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1S1p4N0tBNnhCU1loXzQ2NGowclgybTYzelg3VjE4a0t6WWU1eldLeW5RIn0.eyJleHAiOjE3NDUyMDE2NzMsImlhdCI6MTc0NTE5MDg3MywianRpIjoiN2IyNDg2NWEtNDJmZS00MTUyLWFkYjEtNTg0Y2E4ZTAwYzI2IiwiaXNzIjoiaHR0cDovL2tleWNsb2FrOjgwODAvcmVhbG1zL3NwcmluZy1ib290LW1pY3Jvc2VydmljZXMtcmVhbG0iLCJzdWIiOiI2NDgzZmEwNS01N2RkLTRhYmQtOTUwOC1hOGIyZjQwYWZiMTYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJrcmlwdG9uLXRhbGVudCIsInNlc3Npb25fc3RhdGUiOiIwNmJmYjU0NS0wMmQ5LTQyYzgtYmFmYy1jNDM1Zjg3MzY2OGIiLCJhY3IiOiIxIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImNhbmRpZGF0ZSIsIm9mZmxpbmVfYWNjZXNzIiwidW1hX2F1dGhvcml6YXRpb24iLCJkZWZhdWx0LXJvbGVzLXNwcmluZy1ib290LW1pY3Jvc2VydmljZXMtcmVhbG0iXX0sInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsInNpZCI6IjA2YmZiNTQ1LTAyZDktNDJjOC1iYWZjLWM0MzVmODczNjY4YiIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoib2tiYSBva2JhIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiaG91c2VtIiwiZ2l2ZW5fbmFtZSI6Im9rYmEiLCJmYW1pbHlfbmFtZSI6Im9rYmEiLCJlbWFpbCI6ImhvdXNlbUB0ZXN0LmNvbSJ9.WkIj_cICi_C9AHEG8QHpibQDrEcK9vGmJX6JKxmLyP5S3J0f8ZVbPzXrWdm3Xf2rRyfSyBe8X6CftBZgmikfci-zRN_XIoadDcmDUA-c2qHc_Fu7fSyfuYqKTe_2hid5RYKvjy1E-nD44IO1DeUbu7k45RP6SZzwlp8kVv7FCge2JeqeEMUons_LWVKQWqKguMr_OkGSob4GZBxZa0PsjMHkj2YL6R7mBJfAunOcufnu8CIJbw8X_R9bRtx0p_y7TKyZpttclFXKL-tVNaqhIfORHLBD4wAJuaFbqulYBeIFmv3egLT0ZHYL72HTf7qi5TsyZZ5XzuhbJ6NVw1lyZQ
+
+### Get all jobs
+GET {{baseUrl}}?sortByAttribute=createdAt
+Accept: application/json
+Authorization: Bearer {{token}}
+
+
+### Get job by ID
+GET {{baseUrl}}/{{jobId}}
+Accept: application/json
+
+### Create new job
+# @name createJob
+POST {{baseUrl}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer {{token}}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="job"
+Content-Type: application/json
+
+{
+  "title": "Software Engineer",
+  "description": "We're looking for a talented software engineer to join our team.",
+  "location": "Remote",
+  "employmentType": "FULL_TIME",
+  "experienceLevel": "MID_LEVEL",
+  "proposedSalary": 85000,
+  "company": "Kripton Technologies",
+  "startDate": "2025-06-01",
+  "requiredSkills": ["Java", "Spring Boot", "React"]
+}
+
+### Update existing job
+PUT {{baseUrl}}/{{jobId}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="job"
+Content-Type: application/json
+
+{
+  "title": "Senior Software Engineer",
+  "description": "Updated job description for senior role",
+  "location": "Remote",
+  "employmentType": "FULL_TIME",
+  "experienceLevel": "SENIOR",
+  "proposedSalary": 110000,
+  "company": "Kripton Technologies",
+  "startDate": "2025-06-15",
+  "requiredSkills": ["Java", "Spring Boot", "React", "Microservices"]
+}
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="updated-job-image.jpg"
+Content-Type: image/jpeg
+
+< ./path/to/your/updated-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Delete a job
+DELETE {{baseUrl}}/{{jobId}}
+Accept: application/json
+
+### Assign a candidate to a job
+PUT {{baseUrl}}/assign-job/{{jobId}}/to-candidate/{{candidateId}}
+Accept: application/json
+
+### Assign multiple candidates to a job
+PUT {{baseUrl}}/assign-multiple/{{jobId}}
+Content-Type: application/json
+Accept: application/json
+
+[
+  {
+    "id": 1,
+    "fullName": "John Doe",
+    "email": "john.doe@example.com"
+  },
+  {
+    "id": 2,
+    "fullName": "Jane Smith",
+    "email": "jane.smith@example.com"
+  }
+]
+
+### Get candidates assigned to a job
+GET {{baseUrl}}/assigned-candidates/{{jobId}}
+Accept: application/json
+
+### Find jobs that candidate is not assigned to
+GET {{baseUrl}}/candidate/{{candidateId}}
+Accept: application/json
+
+### Assign a candidate to multiple jobs
+PUT {{baseUrl}}/assign-candidate/{{candidateId}}/jobs
+Content-Type: application/json
+Accept: application/json
+
+[1, 2, 3]
+
+### Unassign a candidate from a job
+DELETE {{baseUrl}}/unassign-candidate/{{candidateId}}/job/{{jobId}}
+Accept: application/json
+
+### Get job applications for a specific job
+GET {{baseUrl}}/job-applications/job/{{jobId}}
+Accept: application/json
+
+### Create a job application
+POST {{baseUrl}}/job-applications/candidate/{{candidateId}}/job/{{jobId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "coverLetter": "I'm very interested in this position and believe my skills align perfectly with your needs.",
+  "currentSalary": 75000,
+  "expectedSalary": 90000,
+  "noticePeriod": 30
+}
+
+### Get job applications for a candidate
+GET {{baseUrl}}/job-applications/candidate/{{candidateId}}
+Accept: application/json
+
+### Update a job application
+PUT {{baseUrl}}/job-applications/{{applicationId}}
+Content-Type: application/json
+Accept: application/json
+
+{
+  "coverLetter": "Updated cover letter with more information about my experience.",
+  "currentSalary": 78000,
+  "expectedSalary": 95000,
+  "noticePeriod": 15
+}
+
+### Get all job applications
+GET {{baseUrl}}/job-applications
+Accept: application/json
+
+### Get jobs not applied to by candidate
+GET {{baseUrl}}/job-applications/not-candidate/{{candidateId}}
+Accept: application/json
+
+### Delete a job application
+DELETE {{baseUrl}}/job-applications/{{applicationId}}
+Accept: application/json
+
+### Delete multiple job applications
+POST {{baseUrl}}/job-applications/multiple
+Content-Type: application/json
+Accept: application/json
+
+[1, 2, 3]
+
+### Delete all job applications for a candidate
+DELETE {{baseUrl}}/job-applications/candidate/{{candidateId}}
+Accept: application/json
+
+### Get job statistics
+GET {{baseUrl}}/stats
+Accept: application/json
